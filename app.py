@@ -50,7 +50,8 @@ def parseGLL(fields):
     return data
 
 
-ser = serial.Serial('/dev/cu.usbserial', baudrate=4800)
+ser = serial.Serial('/dev/tty.usbserial', baudrate=4800)
+# might be tty.usbserial or cu.usbserial
 while ser.isOpen():
     line = ser.readline()
     print line.strip()
