@@ -54,10 +54,10 @@ ser = serial.Serial('/dev/tty.usbserial', baudrate=4800)
 # might be tty.usbserial or cu.usbserial
 while ser.isOpen():
     line = ser.readline()
-    print line.strip()
+    # print line.strip()
     if 'GPGLL' in line:
         reading = line.split(',')
         data = parseGLL(reading[:-1])
-        # print data['Latitude'], data['Longitude']
+        print data['Latitude'], data['Longitude']
 
 ser.close()
