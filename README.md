@@ -18,3 +18,11 @@ Create a virtualenv:
 Install the dependencies:
 
 `pip install -r requirements.txt`
+
+Lots more dependencies:
+
+`brew install opencv`
+
+`brew install sdl sdl_ttf sdl_image sdl_mixer` and then
+
+`pip install hg+http://bitbucket.org/pygame/pygame`
