@@ -7,15 +7,14 @@ class GPS:
         self.ser = serial.Serial('/dev/tty.usbserial', baudrate=4800)
         self.lat = 0
         self.lng = 0
-        polling_thread = threading.Thread(target=self.poll)
-        polling_thread.start()
-        # polling_thread.join()
+        self.polling_thread = threading.Thread(target=self.poll)
+        self.polling_thread.daemon = True
+        self.polling_thread.start()
 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, traceback):
-        # do things
         self.ser.close()
         print "Exited GPS"
 
@@ -25,7 +24,7 @@ class GPS:
         try:
             while self.ser.isOpen():
                 line = self.ser.readline()
-                print line.strip()
+                # print line.strip()
                 if 'GPGLL' in line:
                     reading = line.split(',')
                     data = self.parseGLL(reading[:-1])
