@@ -1,12 +1,30 @@
-from SimpleCV import Image, Camera
-import time
+# This file is from
+# https://github.com/dgaletic/SimpleCV-image-stitcher/blob/master/stitch_sample.py
 
-cam = Camera(0)
-img = cam.getImage()
-img.save("filename.jpg")
-time.sleep(2)
-img = cam.getImage()
-img.save("filename2.jpg")
-time.sleep(2)
-img = cam.getImage()
-img.save("filename3.jpg")
+import SimpleCV
+import os
+import time
+from numpy import vstack,hstack
+
+c = SimpleCV.Camera(0)
+
+# Without this 0.5 sec sleep, the first image my camera takes is very dark,
+# I suppose the issue is it not calibrating fast enough after turning on?
+# time.sleep(0.5)
+
+matrices = []
+
+for i in range(10):
+    img = c.getImage()
+    matrices.append(img.getNumpy())
+    time.sleep(0.5)
+
+mat = vstack(matrices)
+img_stitched = SimpleCV.Image(mat)
+img_stitched.save("stitched_h.png")
+
+mat = hstack(matrices)
+img_stitched = SimpleCV.Image(mat)
+img_stitched.save("stitched_v.png")
+
+print "Images saved in", os.getcwd()
