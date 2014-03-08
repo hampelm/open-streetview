@@ -26,3 +26,7 @@ Lots more dependencies:
 `brew install sdl sdl_ttf sdl_image sdl_mixer` and then
 
 `pip install hg+http://bitbucket.org/pygame/pygame`
+
+Might need to update your path:
+
+`export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"`

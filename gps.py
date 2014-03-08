@@ -67,31 +67,3 @@ class GPS:
             return float(s)
         else:
             return None
-
-
-    # def parseGLL(self, fields):
-    #     """
-    #     Parses the Geographic Position-Latitude/Longitude sentence fields.
-    #     """
-    #     data = {}
-    #
-    #     # GLL has 8 fields
-    #     assert len(fields) == 7
-    #
-    #     # MsgId = fields[0]
-    #     data['Latitude'] = self.toDecimalDegrees(fields[1])
-    #     data['NsIndicator'] = fields[2]
-    #     data['Longitude'] = self.toDecimalDegrees(fields[3])
-    #     data['EwIndicator'] = fields[4]
-    #     data['UtcTime'] = fields[5]
-    #     data['GllStatus'] = fields[6]
-    #
-    #     # Attend to lat/lon plus/minus signs
-    #     if data['NsIndicator'] == 'S':
-    #         data['Latitude'] *= -1.0
-    #     if data['EwIndicator'] == 'W':
-    #         data['Longitude'] *= -1.0
-    #
-    #     return data
-
-

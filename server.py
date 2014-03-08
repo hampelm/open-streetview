@@ -1,14 +1,17 @@
+from cStringIO import StringIO
 from flask import Flask, url_for
 import flask
-from gps import GPS
 import serial
 import string
+
+from gps import GPS
+from camera import Camera
 
 app = Flask(__name__)
 ser = serial.Serial('/dev/tty.usbserial', baudrate=4800)
 
 gps_obj = None
-
+camera_obj = None
 
 @app.route("/position")
 def position():
@@ -16,9 +19,20 @@ def position():
     # return str(gps_obj.lat)
     return flask.jsonify(lat=gps_obj.lat, lng=gps_obj.lng)
 
+@app.route("/photo")
+def photo():
+    print "Getting a photo"
+
+    fp = StringIO()
+    image = camera_obj.snap()
+    image.save(fp, 'JPEG')
+    print fp.getvalue()
+    return fp.getvalue().encode("base64")
+
 if __name__ == "__main__":
     with GPS() as gps_obj:
-        app.run(debug=True)
-        url_for('static', filename='index.html')
+        with Camera() as camera_obj:
+            app.run(debug=True)
+            url_for('static', filename='index.html')
 
 
