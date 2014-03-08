@@ -12,9 +12,9 @@ gps_obj = None
 
 @app.route("/position")
 def position():
-    print "Checking for position"
-    return str(gps_obj.lat)
-    # return flask.jsonify(lat=data['Latitude'], lng=data['Longitude'])
+    print "Checking for position", gps_obj.lat, gps_obj.lng
+    # return str(gps_obj.lat)
+    return flask.jsonify(lat=gps_obj.lat, lng=gps_obj.lng)
 
 if __name__ == "__main__":
     with GPS() as gps_obj:

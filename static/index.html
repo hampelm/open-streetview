@@ -24,6 +24,38 @@
         var map = L.map('map').setView([42.42, -83.02 ], 13);
          baseLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/matth.map-zmpggdzn/{z}/{x}/{y}.png');
          map.addLayer(baseLayer);
+        var dots = L.layerGroup().addTo(map);
+        var style = {
+          stroke: false,
+          fillColor: 'blue',
+          fillOpacity: 1,
+          radius: 5
+        };
+
+         var success = function(data) {
+          console.log(data);
+          var ll = [data.lat, data.lng];
+          var marker = L.circleMarker(ll, style);
+          dots.addLayer(marker);
+          map.panTo(ll);
+         };
+
+
+        var fetch = function() {
+          var jqxhr = $.ajax('/position', {
+            dataType: 'json'
+          });
+
+          jqxhr.done(success);
+
+          jqxhr.fail(function(error) {
+            console.log(error);
+          });
+        };
+
+         // Check for the location
+        window.setInterval(fetch, 1000);
+
       });
     </script>
   </body>

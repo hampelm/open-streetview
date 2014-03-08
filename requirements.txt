@@ -1,6 +1,7 @@
-pyserial
 flask
-SimpleCV
-pygame
-scipy
 nose
+pygame
+pynmea2
+pyserial
+scipy
+SimpleCV
