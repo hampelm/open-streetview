@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from StringIO import StringIO
 from flask import Flask, url_for
 import flask
 import serial
@@ -25,9 +25,12 @@ def photo():
 
     fp = StringIO()
     image = camera_obj.snap()
-    image.save(fp, 'JPEG')
-    print fp.getvalue()
-    return fp.getvalue().encode("base64")
+    image.save(fp, 'png')
+    # print fp.getvalue()
+    response = flask.make_response(fp.getvalue())
+    response.headers['Content-Type'] = 'image/png'
+    return response
+
 
 if __name__ == "__main__":
     with GPS() as gps_obj:

@@ -1,7 +1,6 @@
 # Some code in this file is based on
 # https://github.com/dgaletic/SimpleCV-image-stitcher/blob/master/stitch_sample.py
 
-from cStringIO import StringIO
 from numpy import vstack,hstack
 import os
 import SimpleCV
@@ -20,6 +19,7 @@ class Camera:
 
     def snap(self):
         img = self.camera.getImage()
+        img.save("file.png")
         return img
 
     # Without this 0.5 sec sleep, the first image my camera takes is very dark,

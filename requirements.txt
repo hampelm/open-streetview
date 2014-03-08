@@ -1,5 +1,6 @@
 flask
 nose
+pil
 pygame
 pynmea2
 pyserial
