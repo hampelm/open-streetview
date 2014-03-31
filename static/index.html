@@ -8,21 +8,43 @@
       #map {
         height: 300px;
       }
+
+      #photos {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        height: 300px;
+        white-space:nowrap
+      }
+
+      #photos img {
+          margin: 2px;
+          max-height: 300px;
+          cursor: pointer;
+          display:inline-block;
+          *display:inline;/* For IE7*/
+          *zoom:1;/* For IE7*/
+          vertical-align:top;
+       }
     </style>
   </head>
   <body>
-    <h1>Hello, world!</h1>
-    <div id="hover"></div>
-
     <div id="map"></div>
+    <div id="photos">
+      <div id="photos-in">
+      </div>
+    </div>
 
 
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
     <script type="text/javascript">
+      /*globals L: true */
       $(function(){
+        'use strict';
+
+        // Set up the map
         var map = L.map('map').setView([42.42, -83.02 ], 13);
-         baseLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/matth.map-zmpggdzn/{z}/{x}/{y}.png');
+        var baseLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/matth.map-zmpggdzn/{z}/{x}/{y}.png');
          map.addLayer(baseLayer);
         var dots = L.layerGroup().addTo(map);
         var style = {
@@ -34,15 +56,29 @@
 
          var success = function(data) {
           console.log(data);
+          var $photo = $("<img src='" + data.photo.slice(7) + "'>");
+
+          // Add a marker to the map
           var ll = [data.lat, data.lng];
           var marker = L.circleMarker(ll, style);
           dots.addLayer(marker);
+          marker.bindPopup("<img width='300' src='" + data.photo.slice(7) + "'>");
+
           map.panTo(ll);
-         };
 
+          // Add a popup to the marker
 
+          // Add  the photo to the stream.
+          $("#photos-in").append($photo);
+          // TODO: For some reason, $photo.width() is 0 even tho it's in
+          // the DOM
+          // console.log($photo.offset(), $photo.width());
+          // $("#photos").scrollLeft($photo.offset().left + 534);
+        };
+
+        // Check for photo data
         var fetch = function() {
-          var jqxhr = $.ajax('/position', {
+          var jqxhr = $.ajax('/photo', {
             dataType: 'json'
           });
 
@@ -54,7 +90,7 @@
         };
 
          // Check for the location
-        window.setInterval(fetch, 1000);
+        window.setInterval(fetch, 1700);
 
       });
     </script>

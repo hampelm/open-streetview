@@ -3,6 +3,9 @@ USB webcam, too.
 
 I'm using a GlobalSat BU-353 USB GPS reciever. It costs about $40 on Amazon.
 
+## Using the app
+
+Browse to `http://127.0.0.1:5000/static/index.html` to see the map.
 
 ## Getting started
 

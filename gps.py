@@ -41,12 +41,20 @@ class GPS:
         streamreader = pynmea2.NMEAStreamReader()
         while self.ser.isOpen():
             data = self.ser.readline()
-            for msg in streamreader.next(data):
-                if (msg.type == 'GGA'):
-                    self.lat = self.toDecimalDegrees(msg.lat)
-                    self.lng = self.toDecimalDegrees(msg.lon)
+            try:
+                for msg in streamreader.next(data):
+                    if (msg.type == 'GGA'):
+                        self.lat = self.toDecimalDegrees(msg.lat)
+                        if msg.lon_dir == 'E':
+                            self.lng = self.toDecimalDegrees(msg.lon)
+                        else:
+                            self.lng = -self.toDecimalDegrees(msg.lon)
 
-                    print self.lat, self.lng
+                        print self.lat, self.lng
+            except:
+                # Sometimes we get unreadable nmea strings.
+                # Let's just ignore them for now.
+                pass
 
 
     def toDecimalDegrees(self, ddmm):

@@ -7,6 +7,8 @@ import string
 from gps import GPS
 from camera import Camera
 
+PHOTODIR = 'static/photos/'
+
 app = Flask(__name__)
 ser = serial.Serial('/dev/tty.usbserial', baudrate=4800)
 
@@ -19,17 +21,31 @@ def position():
     # return str(gps_obj.lat)
     return flask.jsonify(lat=gps_obj.lat, lng=gps_obj.lng)
 
+
+"""
+Take a photo and save it with the ll as the filename.
+Also send it as a response
+"""
 @app.route("/photo")
 def photo():
     print "Getting a photo"
-
-    fp = StringIO()
     image = camera_obj.snap()
-    image.save(fp, 'png')
-    # print fp.getvalue()
-    response = flask.make_response(fp.getvalue())
-    response.headers['Content-Type'] = 'image/png'
-    return response
+
+    # We'll first save the image locally
+    # Filename is based on position
+    lat = gps_obj.lat
+    lng = gps_obj.lng
+    filename = PHOTODIR + str(lat) + str(lng) + ".png"
+    image.save(filename) # Save the image for later
+
+
+    return flask.jsonify(lat=lat, lng=lng, photo=filename)
+    # # We'll also save the image as a buffer so we can send it by http
+    # fp = StringIO()
+    # image.save(fp, 'png')
+    # response = flask.make_response(fp.getvalue())
+    # response.headers['Content-Type'] = 'image/png'
+    # return response
 
 
 if __name__ == "__main__":
